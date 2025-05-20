@@ -23,7 +23,7 @@ CREATE TABLE tbl_evento (
     descricao TEXT,
     data_evento DATE NOT NULL,
     horario TIME NOT NULL,
-    local VARCHAR(70) NOT NULL,
+    local   VARCHAR(70) NOT NULL,
     imagem VARCHAR(500),
     limite_participante DECIMAL(10,2),
     valor_ingresso DECIMAL(10,2)
