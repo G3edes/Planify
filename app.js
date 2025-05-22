@@ -1,7 +1,7 @@
 /******************************************************************************************************
- * OBJETIVO: Criar uma API para realizar o CRUD do sistema de controle de Filmes                      *
+ * OBJETIVO: Criar uma API para realizar o CRUD do sistema de Eventos                                 *
  * DATA: 20/05/2025                                                                                   *
- * AUTOR: Gabriel Guedes                                                                                   *
+ * AUTOR: Gabriel Guedes                                                                              *
  * Versão: 1.0                                                                                        *
  * Observação:                                                                                        *
  *          Para criar a API precisamos instalar:                                                     *
@@ -44,3 +44,54 @@ app.use((req, res, next) => {
 
 // Middleware para interpretar JSON no body
 app.use(express.json())
+
+const controllerUsuario= require('./controller/usuario/controllerUsuario')
+
+/*******************************************************************************************************************
+ * 
+ *                                  USUARIO
+ * 
+ ********************************************************************************************************************/
+
+app.post('/v1/planify/usuariopost', cors(), bodyParserJSON, async function (request, response) {
+    //recebe o content-type da requisição
+    let contentType=request.headers['content-type']
+    //recebe do body da requisição os dados encaminhados
+    let dadosBody=request.body
+    let result= await controllerUsuario.inserirUsuario(dadosBody,contentType)
+    response.status(result.status_code)
+    response.json(result)
+})
+app.get('/v1/planify/usuariolistar', cors(), async function (request, response) {
+    let result= await controllerUsuario.listarUsuario()
+    response.status(result.status_code)
+    response.json(result)
+})
+app.get('/v1/planify/usuario/:id', cors(), async function (request, response) {
+    let id=request.params.id
+    let result= await controllerUsuario.buscarUsuario(id)
+    response.status(result.status_code)
+    response.json(result)
+})
+app.delete('/v1/planify/usuario_delete/:id', cors(), async function (request, response){
+    let id = request.params.id
+    let result = await controllerUsuario.excluirUsuario(id)
+
+    response.status(result.status_code)
+    response.json(result)
+})
+app.put('/v1/planify/usuario/:id', cors(), bodyParserJSON,async function (request, response) {
+    //content-type requisição
+    let contentType= request.headers['content-type']
+    //id da requisção
+    let id = request.params.id
+    //body da requisição
+    let dadosBody=request.body
+    let result= await  controllerUsuario.atualizarUsuario(id, dadosBody, contentType)
+    response.status(result.status_code)
+    response.json(result)
+})
+
+app.listen('8080', function(){
+    console.log('API funcionando e aguardando requisições..')
+})

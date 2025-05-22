@@ -6,7 +6,7 @@ CREATE TABLE tbl_usuario (
     id_usuario INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(100) NOT NULL,
     email VARCHAR(60) NOT NULL UNIQUE,
-    senha VARCHAR(12) NOT NULL,
+    senha VARCHAR(20) NOT NULL,
     data_nascimento DATE NOT NULL,
     foto_perfil VARCHAR(500),
     palavra_chave VARCHAR(15) NOT NULL
