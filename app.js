@@ -32,7 +32,10 @@ const bodyParserJSON = bodyParser.json()
 const app = express()
 
 // Middleware para permitir requisições CORS
-app.use(cors())
+app.use(cors({
+    origin: 'http://127.0.0.1:5501',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+}))
 
 // Corrige o cabeçalho CORS
 app.use((req, res, next) => {
@@ -191,6 +194,6 @@ app.put('/v1/planify/categoria/:id', cors(), bodyParserJSON,async function (requ
     response.json(result)
 })
 
-app.listen('8080', function(){
+app.listen(8080, function(){
     console.log('API funcionando e aguardando requisições..')
 })
