@@ -1,20 +1,16 @@
-const DAOUser=require('../../model/DAO/usuarioDAO.js')
+const DAOCategoria=require('../../model/DAO/categoriaDAO.js')
 const message =require('../../modulo/config.js')
 
-const inserirUsuario = async (usuario, contentType) => {
+const inserirCategoria = async (categoria, contentType) => {
     try {
         if (contentType && contentType.includes('application/json')) {
 
-            if (usuario.nome == ''                || usuario.nome == undefined            || usuario.nome == null             || usuario.nome.length>100            ||
-            usuario.email == ''                   || usuario.email == undefined           || usuario.email == null            || usuario.email.length>60            ||
-            usuario.senha == ''                   || usuario.senha == undefined           || usuario.senha == null            || usuario.senha.length>20                   ||
-            usuario.data_nascimento == ''         || usuario.data_nascimento == undefined || usuario.data_nascimento == null  || usuario.data_nascimento.length>10  ||
-            usuario.palavra_chave == undefined    || usuario.palavra_chave .length>15     ||
-            usuario.foto_perfil == undefined      || usuario.foto_perfil.length>500){
+            if (categoria.categoria == ''                || categoria.categoria == undefined            || categoria.categoria == null             || categoria.categoria.length>100
+            ){
 
                 return message.ERROR_REQUIRED_FIELDS
             }else{
-                let result = await DAOUser.inserirUsuario(usuario)
+                let result = await DAOCategoria.inserirCategoria(categoria)
                 if (result) {
                     return message.SUCESS_CREATED_ITEM
                 }else{
@@ -30,23 +26,22 @@ const inserirUsuario = async (usuario, contentType) => {
     }
 }
 
-const atualizarUsuario = async (id, usuario, contentType) => {
+const atualizarCategoria = async (id, categoria, contentType) => {
     try {
         if (contentType == 'application/json') {
-            if (usuario.nome == ''                || usuario.nome == undefined            || usuario.nome == null             || usuario.nome.length>100            ||
-            usuario.email == ''                   || usuario.email == undefined           || usuario.email == null            || usuario.email.length>60            ||
-            usuario.senha == ''                   || usuario.senha == undefined           || usuario.senha == null            || usuario.senha.length>20                   ||
-            usuario.data_nascimento == ''         || usuario.data_nascimento == undefined || usuario.data_nascimento == null  || usuario.data_nascimento.length>10  ||
-            usuario.palavra_chave == undefined    || usuario.palavra_chave .length>15     ||
-            usuario.foto_perfil == undefined      || usuario.foto_perfil.length>500){
+            if (categoria.categoria == ''                || categoria.categoria == undefined            || categoria.categoria == null             || categoria.categoria.length>100   
+            ){
+                
+
+
                 return message.ERROR_REQUIRED_FIELDS
             }
-            let result=await DAOUser.selectusuarioById(id)
+            let result=await DAOCategoria.selectCategoriaById(id)
             if (result != false || typeof(result)== 'object') {
                 if (result.length>0) {
-                    usuario.id=parseInt(id)
+                    categoria.id=parseInt(id)
                     
-                    let result = await DAOUser.updateUsuario(usuario)
+                    let result = await DAOCategoria.updateCategoria(categoria)
                     if (result) {
                         return message.SUCESS_UPDATED_ITEM
                     }else{
@@ -66,20 +61,20 @@ const atualizarUsuario = async (id, usuario, contentType) => {
     }
 }
 
-const excluirUsuario = async function (id){
+const excluirCategoria = async function (id){
     try {
         if(id == '' || id == undefined || id == null || isNaN(id) || id <= 0){
             return message.ERROR_REQUIRED_FIELDS //400
         }else{
 
             //função que verifica se ID existe no BD
-            let results = await DAOUser.selectusuarioById(parseInt(id))
+            let results = await DAOCategoria.selectcategoriaById(parseInt(id))
 
             if(results != false || typeof(results) == 'object'){
                 //se exestir, faremos o delete
                 if(results.length > 0){
                     //delete    
-                    let result = await DAOUser.deleteUsuario(parseInt(id))
+                    let result = await DAOCategoria.deleteCategoria(parseInt(id))
 
                     if(result){
                         return message.SUCCESS_DELETED_ITEM
@@ -99,17 +94,17 @@ const excluirUsuario = async function (id){
     }
 }
 
-const listarUsuario = async function () {
+const listarCategoria = async function () {
     try {
         let dados={}
-        let result = await DAOUser.selectAllUsuario()
+        let result = await DAOCategoria.selectAllCategoria()
         if (result != false || typeof(result)=='object') {
         
             if(result.length>0){
                 dados.status=true
                 dados.status_code=200,
                 dados.itens=result.length
-                dados.usuario=result
+                dados.categoria=result
                 return dados
             }else{
                 return message.ERROR_NOT_FOUND
@@ -117,26 +112,27 @@ const listarUsuario = async function () {
         }else{
             return message.ERROR_INTERNAL_SERVER_MODEL
         }
-        //cha,a a funcao para retornarusuarios cadastrados
+        //chama a funcao para retornar categorias cadastradas
     } catch (error) {
         return message.ERROR_INTERNAL_SERVER_CONTROLLER ///500
     }
 }
 
-const buscarUsuario = async function (id) {
+const buscarCategoria = async function (id) {
     let dados={}
     try {
+        
         if (id == ''|| id == undefined|| id == null|| id<0 
         ) {
             return message.ERROR_REQUIRED_FIELDS //400
         }else{
-            let result = await DAOUser.selectusuarioById(id)
+            let result = await DAOCategoria.selectcategoriaById(id)
             if (result != false || typeof(result)=='object'){
                 if (result.length>0) {
                     dados={
                         status:true,
                         status_code:200,
-                        usuario:result
+                        categoria:result
                     }
                     return dados
                 }else{
@@ -153,9 +149,9 @@ const buscarUsuario = async function (id) {
 }
 
 module.exports={
-    inserirUsuario,
-    listarUsuario,
-    buscarUsuario,
-    excluirUsuario,
-    atualizarUsuario
+    inserirCategoria,
+    listarCategoria,
+    buscarCategoria,
+    excluirCategoria,
+    atualizarCategoria
 }

@@ -15,9 +15,9 @@ const inserirCategoria = async (dados) => {
     try {
         let sql = `
           INSERT INTO tbl_categoria (
-            nome
+            categoria
           ) VALUES (
-            '${dados.nome}'
+            '${dados.categoria}'
           )`
     
         let result = await prisma.$executeRawUnsafe(sql);
@@ -31,7 +31,7 @@ const inserirCategoria = async (dados) => {
 const updateCategoria = async (dados) => {
     try {
         let sql = `update tbl_categoria set
-                            nome = '${dados.nome}'
+                            categoria = '${dados.categoria}'
                     where id = ${dados.id}`
 
         let resultFilme = await prisma.$executeRawUnsafe(sql)

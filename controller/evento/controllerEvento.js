@@ -1,23 +1,47 @@
-const DAOevento=require('../../model/DAO/eventoDAO.js')
+const DAOevento=require('../../model/DAO/evento/eventoDAO.js')
+const DAOeventoCategoria = require ('../../model/DAO/evento/evento_categoriaDAO.js')
+
+const controllerEventoCategoria = require ('../../controller/evento/controllerEventoCategoria.js')
 const controllerUsuario=require('../../controller/usuario/controllerUsuario.js')
+
 const message =require('../../modulo/config.js')
 
 const inserirEvento = async (evento, contentType) => {
+    
     try {
         if (contentType && contentType.includes('application/json')) {
-
-            if (evento.titulo == ''                 || evento.titulo == undefined           || evento.titulo == null                                || evento.titulo.length>100              ||
-                evento.descricao == ''              || evento.descricao == undefined        || evento.descricao == null                             || evento.descricao.length>60            ||
-                evento.data_evento == ''            || evento.data_evento == undefined      || evento.data_evento == null                           || evento.data_evento.length>20          ||
-                evento.horario == ''                || evento.horario == undefined          || evento.horario == null  || evento.horario.length>10  ||
-                evento.horario == undefined         || evento.horario.length>15             || evento.horario == undefined                          || evento.horario.length>500             ||
-                evento.id_usuario == ''             || evento.id_usuario==undefined         || evento.id_usuario == null
-            ){
+            
+            if (
+                evento.titulo == '' || evento.titulo == undefined || evento.titulo == null || evento.titulo.length > 100 ||
+                evento.descricao == '' || evento.descricao == undefined || evento.descricao == null || evento.descricao.length > 60 ||
+                evento.data_evento == '' || evento.data_evento == undefined || evento.data_evento == null || evento.data_evento.length > 20 ||
+                evento.horario == '' || evento.horario == undefined || evento.horario == null || evento.horario.length > 15 ||
+                evento.local == '' || evento.local == undefined || evento.local == null || evento.local.length > 70 ||
+                evento.imagem == '' || evento.imagem == undefined || evento.imagem == null || evento.imagem.length > 500 ||
+                evento.limite_participante == '' || evento.limite_participante == undefined || evento.limite_participante == null ||
+                evento.valor_ingresso == '' || evento.valor_ingresso == undefined || evento.valor_ingresso == null ||
+                evento.id_usuario == '' || evento.id_usuario == undefined || evento.id_usuario == null
+            ) {
 
                 return message.ERROR_REQUIRED_FIELDS
             }else{
                 let result = await DAOevento.inserirEvento(evento)
                 if (result) {
+                    if (evento.categoria && Array.isArray(evento.categoria)) {
+                        let eventoInserido = await DAOevento.selectLastId()
+                        //Pegando o ultimo id inserido
+                        let idEvento = eventoInserido[0].id_evento //vendo se volta id
+
+                        for (let categoria of evento.categoria) {
+                            if (categoria.id_categoria && !isNaN(categoria.id_categoria)) {
+                                let eventoCategoria = {
+                                    id_evento: idEvento,
+                                    id_categoria: categoria.id_categoria
+                                }
+                                await DAOeventoCategoria.insertEventoCategoria(eventoCategoria)
+                            }
+                        }
+                    }
                     return message.SUCESS_CREATED_ITEM
                 }else{
                     return message.ERROR_INTERNAL_SERVER_MODEL
@@ -35,13 +59,17 @@ const inserirEvento = async (evento, contentType) => {
 const atualizarEvento = async (id, evento, contentType) => {
     try {
         if (contentType == 'application/json') {
-            if (evento.titulo == ''                 || evento.titulo == undefined           || evento.titulo == null                                || evento.titulo.length>100              ||
-                evento.descricao == ''              || evento.descricao == undefined        || evento.descricao == null                             || evento.descricao.length>60            ||
-                evento.data_evento == ''            || evento.data_evento == undefined      || evento.data_evento == null                           || evento.data_evento.length>20          ||
-                evento.horario == ''                || evento.horario == undefined          || evento.horario == null  || evento.horario.length>10  ||
-                evento.horario == undefined         || evento.horario.length>15             || evento.horario == undefined                          || evento.horario.length>500             ||
-                evento.id_usuario == ''             || evento.id_usuario==undefined         || evento.id_usuario == null
-            ){
+            if (
+                evento.titulo == '' || evento.titulo == undefined || evento.titulo == null || evento.titulo.length > 100 ||
+                evento.descricao == '' || evento.descricao == undefined || evento.descricao == null || evento.descricao.length > 60 ||
+                evento.data_evento == '' || evento.data_evento == undefined || evento.data_evento == null || evento.data_evento.length > 20 ||
+                evento.horario == '' || evento.horario == undefined || evento.horario == null || evento.horario.length > 15 ||
+                evento.local == '' || evento.local == undefined || evento.local == null || evento.local.length > 70 ||
+                evento.imagem == '' || evento.imagem == undefined || evento.imagem == null || evento.imagem.length > 500 ||
+                evento.limite_participante == '' || evento.limite_participante == undefined || evento.limite_participante == null ||
+                evento.valor_ingresso == '' || evento.valor_ingresso == undefined || evento.valor_ingresso == null ||
+                evento.id_usuario == '' || evento.id_usuario == undefined || evento.id_usuario == null
+            ) {
 
                 return message.ERROR_REQUIRED_FIELDS
             }
@@ -49,8 +77,11 @@ const atualizarEvento = async (id, evento, contentType) => {
             if (result != false || typeof(result)== 'object') {
                 if (result.length>0) {
                     evento.id=parseInt(id)
-                    let result = await DAOusuario.updateGenro(genero)
+
+                    let result = await DAOevento.updateEvento(genero)
+
                     if (result) {
+                        
                         return message.SUCESS_UPDATED_ITEM
                     }else{
                         return message.ERROR_INTERNAL_SERVER_MODEL
@@ -105,6 +136,7 @@ const excluirEvento = async function (id){
 
 const listarEvento = async function () {
     try {
+        let arrayEventos=[]
         let dados={}
         let result = await DAOevento.selectAllEvento()
         
@@ -114,7 +146,7 @@ const listarEvento = async function () {
                 dados.status=true
                 dados.status_code=200,
                 dados.itens=result.length
-                dados.usuario=result
+                dados.eventos=result
 
                 for (const itemEvento of result) {
                     /* Monta o objeto da classificação para retornar no Filme (1XN) */
@@ -124,11 +156,20 @@ const listarEvento = async function () {
                     itemEvento.usuario = dadosUsuario.usuario
                     //Remover um atributo do JSON
                     delete itemEvento.id_usuario
+                    
+                    let dadosCategoria = await controllerEventoCategoria.buscarCategoriaPorEvento(itemEvento.id_evento)
+                    
+                    
+                    
+                    itemEvento.categoria = dadosCategoria.categoria
+                
+                    //delete itemFilme.id_genero
 
-                    arrayEvento.push(itemEvento)
+
+                    arrayEventos.push(itemEvento)
                 }
-
-                dados.eventos= arrayEvento
+                
+                dados.eventos = arrayEventos
 
                 return dados
             }else{
@@ -139,6 +180,7 @@ const listarEvento = async function () {
         }
         //cha,a a funcao para retornarusuarios cadastrados
     } catch (error) {
+        console.log(error)
         return message.ERROR_INTERNAL_SERVER_CONTROLLER ///500
     }
 }

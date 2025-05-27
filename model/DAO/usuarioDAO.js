@@ -40,7 +40,7 @@ const inserirUsuario = async (dados) => {
 }
 
 const updateUsuario = async (dados) => {
-    console.log(dados)
+    
     try {
         let sql = `update tbl_usuario set
                             nome = '${dados.nome}',

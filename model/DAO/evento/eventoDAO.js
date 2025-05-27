@@ -21,7 +21,7 @@ const inserirEvento = async (dados) => {
             horario,
             local,
             imagem,
-            limite_participantes,
+            limite_participante,
             valor_ingresso,
             id_usuario
           ) VALUES (
@@ -31,7 +31,7 @@ const inserirEvento = async (dados) => {
             '${dados.horario}',
             '${dados.local}',
             '${dados.imagem}',
-            '${dados.limite_participantes}',
+            '${dados.limite_participante}',
             '${dados.valor_ingresso}',
             '${dados.id_usuario}'
           )`
@@ -98,7 +98,7 @@ const deleteEvento = async function(id){
 
 const selectAllEvento = async function(){
     try {
-        let sql = 'select * from tbl_evento order by id desc'
+        let sql = 'select * from tbl_evento order by id_evento desc'
 
         let result = await prisma.$queryRawUnsafe(sql)
 
@@ -126,10 +126,26 @@ const selectEventoById = async function(id){
     }
 }
 
+const selectLastId = async function() {
+    try {
+        let sql = 'select id_evento from tbl_evento order by id_evento desc limit 1'
+        let result = await prisma.$queryRawUnsafe(sql)
+        if (result)
+            return result
+        else
+            return false
+    } catch (error) {
+        console.log(error)
+        return false
+    }
+}
+
+
 module.exports = {
     inserirEvento,
     updateEvento,
     deleteEvento,
     selectAllEvento,
-    selectEventoById
+    selectEventoById,
+    selectLastId
 }

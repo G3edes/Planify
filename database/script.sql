@@ -14,7 +14,7 @@ CREATE TABLE tbl_usuario (
 
 CREATE TABLE tbl_categoria (
     id_categoria INT PRIMARY KEY AUTO_INCREMENT,
-    nome_categoria VARCHAR(50) NOT NULL UNIQUE
+    categoria VARCHAR(50) NOT NULL UNIQUE
 );
 
 CREATE TABLE tbl_evento (

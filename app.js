@@ -58,6 +58,8 @@ app.post('/v1/planify/usuario', cors(), bodyParserJSON, async function (request,
     //recebe o content-type da requisição
     let contentType=request.headers['content-type']
     //recebe do body da requisição os dados encaminhados
+
+    
     let dadosBody=request.body
     let result= await controllerUsuario.inserirUsuario(dadosBody,contentType)
     response.status(result.status_code)
@@ -108,24 +110,24 @@ app.post('/v1/planify/evento', cors(), bodyParserJSON, async function (request, 
     let contentType=request.headers['content-type']
     //recebe do body da requisição os dados encaminhados
     let dadosBody=request.body
-    let result= await controllerUsuario.inserirUsuario(dadosBody,contentType)
+    let result= await controllerEvento.inserirEvento(dadosBody,contentType)
     response.status(result.status_code)
     response.json(result)
 })
 app.get('/v1/planify/evento', cors(), async function (request, response) {
-    let result= await controllerUsuario.listarUsuario()
+    let result= await controllerEvento.listarEvento()
     response.status(result.status_code)
     response.json(result)
 })
 app.get('/v1/planify/evento/:id', cors(), async function (request, response) {
     let id=request.params.id
-    let result= await controllerUsuario.buscarUsuario(id)
+    let result= await controllerEvento.buscarEvento(id)
     response.status(result.status_code)
     response.json(result)
 })
 app.delete('/v1/planify/evento/:id', cors(), async function (request, response){
     let id = request.params.id
-    let result = await controllerUsuario.excluirUsuario(id)
+    let result = await controllerEvento.excluirEvento(id)
 
     response.status(result.status_code)
     response.json(result)
@@ -137,12 +139,57 @@ app.put('/v1/planify/evento/:id', cors(), bodyParserJSON,async function (request
     let id = request.params.id
     //body da requisição
     let dadosBody=request.body
-    let result= await  controllerUsuario.atualizarUsuario(id, dadosBody, contentType)
+    let result= await  controllerEvento.atualizarEvento(id, dadosBody, contentType)
     response.status(result.status_code)
     response.json(result)
 })
 
+/*******************************************************************************************************************
+ * 
+ *                                      CATEGORIA
+ * 
+ ********************************************************************************************************************/
 
+const controllerCategoria = require ('./controller/categoria/controllerCategoria')
+
+app.post('/v1/planify/categoria', cors(), bodyParserJSON, async function (request, response) {
+    //recebe o content-type da requisição
+    let contentType=request.headers['content-type']
+    //recebe do body da requisição os dados encaminhados
+    let dadosBody=request.body
+    let result= await controllerCategoria.inserirCategoria(dadosBody,contentType)
+    response.status(result.status_code)
+    response.json(result)
+})
+app.get('/v1/planify/categoria', cors(), async function (request, response) {
+    let result= await controllerCategoria.listarCategoria()
+    response.status(result.status_code)
+    response.json(result)
+})
+app.get('/v1/planify/categoria/:id', cors(), async function (request, response) {
+    let id=request.params.id
+    let result= await controllerCategoria.buscarCategoria(id)
+    response.status(result.status_code)
+    response.json(result)
+})
+app.delete('/v1/planify/categoria/:id', cors(), async function (request, response){
+    let id = request.params.id
+    let result = await controllerCategoria.excluirCategoria(id)
+
+    response.status(result.status_code)
+    response.json(result)
+})
+app.put('/v1/planify/categoria/:id', cors(), bodyParserJSON,async function (request, response) {
+    //content-type requisição
+    let contentType= request.headers['content-type']
+    //id da requisção
+    let id = request.params.id
+    //body da requisição
+    let dadosBody=request.body
+    let result= await  controllerCategoria.atualizarCategoria(id, dadosBody, contentType)
+    response.status(result.status_code)
+    response.json(result)
+})
 
 app.listen('8080', function(){
     console.log('API funcionando e aguardando requisições..')
