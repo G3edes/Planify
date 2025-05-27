@@ -1,5 +1,5 @@
-show databases;
 create database db_planify;
+
 use db_planify;
 
 CREATE TABLE tbl_usuario (
@@ -23,38 +23,40 @@ CREATE TABLE tbl_evento (
     descricao TEXT,
     data_evento DATE NOT NULL,
     horario TIME NOT NULL,
-    local   VARCHAR(70) NOT NULL,
+    local VARCHAR(70) NOT NULL,
     imagem VARCHAR(500),
     limite_participante DECIMAL(10,2),
-    valor_ingresso DECIMAL(10,2)
-);
-
-CREATE TABLE tbl_usuario_categoria (
-    id_usuario_categoria INT PRIMARY KEY AUTO_INCREMENT,
-    tbl_usuario_id_usuario INT NOT NULL,
-    tbl_categoria_id_categoria INT NOT NULL,
-    CONSTRAINT fk_usuario_categoria_usuario
-        FOREIGN KEY (tbl_usuario_id_usuario)
+    valor_ingresso DECIMAL(10,2),
+    id_usuario INT NOT NULL,
+    CONSTRAINT fk_usuario_evento
+        FOREIGN KEY (id_usuario)
         REFERENCES tbl_usuario(id_usuario)
-        ON DELETE CASCADE,
-    CONSTRAINT fk_usuario_categoria_categoria
-        FOREIGN KEY (tbl_categoria_id_categoria)
-        REFERENCES tbl_categoria(id_categoria)
         ON DELETE CASCADE
 );
+
 
 CREATE TABLE tbl_evento_categoria (
     id_evento_categoria INT PRIMARY KEY AUTO_INCREMENT,
-    tbl_categoria_id_categoria INT NOT NULL,
-    tbl_evento_id_evento INT NOT NULL,
+    id_categoria INT NOT NULL,
+    id_evento INT NOT NULL,
     CONSTRAINT fk_evento_categoria_categoria
-        FOREIGN KEY (tbl_categoria_id_categoria)
+        FOREIGN KEY (id_categoria)
         REFERENCES tbl_categoria(id_categoria)
         ON DELETE CASCADE,
     CONSTRAINT fk_evento_categoria_evento
-        FOREIGN KEY (tbl_evento_id_evento)
+        FOREIGN KEY (id_evento)
         REFERENCES tbl_evento(id_evento)
         ON DELETE CASCADE
+);
+
+CREATE TABLE tbl_participar_evento (
+    id_participar_evento INT NOT NULL PRIMARY KEY auto_increment,
+    id_evento INT NOT NULL,
+    id_usuario INT NOT NULL,
+    CONSTRAINT fk_participar_evento_evento FOREIGN KEY (id_evento)
+        REFERENCES tbl_evento(id_evento),
+    CONSTRAINT fk_participar_evento_usuario FOREIGN KEY (id_usuario)
+        REFERENCES tbl_usuario(id_usuario)
 );
 
 show tables;

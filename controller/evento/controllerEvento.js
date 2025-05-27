@@ -1,22 +1,24 @@
-const DAOevento=require('../../model/DAO/usuarioDAO.js')
+const DAOevento=require('../../model/DAO/eventoDAO.js')
+const controllerUsuario=require('../../controller/usuario/controllerUsuario.js')
 const message =require('../../modulo/config.js')
 
-const inserirUsuario = async (usuario, contentType) => {
+const inserirEvento = async (evento, contentType) => {
     try {
         if (contentType && contentType.includes('application/json')) {
 
-            if (usuario.nome == ''                || usuario.nome == undefined            || usuario.nome == null             || usuario.nome.lenght>100            ||
-            usuario.email == ''                   || usuario.email == undefined           || usuario.email == null            || usuario.email.lenght>60            ||
-            usuario.senha == ''                   || usuario.senha == undefined           || usuario.senha == null            || usuario.senha>20                   ||
-            usuario.data_nascimento == ''         || usuario.data_nascimento == undefined || usuario.data_nascimento == null  || usuario.data_nascimento.lenght>10  ||
-            usuario.palavra_chave == undefined    || usuario.palavra_chave .lenght>15     ||
-            usuario.foto_perfil == undefined      || usuario.foto_perfil.lenght>500){
+            if (evento.titulo == ''                 || evento.titulo == undefined           || evento.titulo == null                                || evento.titulo.length>100              ||
+                evento.descricao == ''              || evento.descricao == undefined        || evento.descricao == null                             || evento.descricao.length>60            ||
+                evento.data_evento == ''            || evento.data_evento == undefined      || evento.data_evento == null                           || evento.data_evento.length>20          ||
+                evento.horario == ''                || evento.horario == undefined          || evento.horario == null  || evento.horario.length>10  ||
+                evento.horario == undefined         || evento.horario.length>15             || evento.horario == undefined                          || evento.horario.length>500             ||
+                evento.id_usuario == ''             || evento.id_usuario==undefined         || evento.id_usuario == null
+            ){
 
                 return message.ERROR_REQUIRED_FIELDS
             }else{
-                let result = await DAOevento.inserirUsuario(usuario)
+                let result = await DAOevento.inserirEvento(evento)
                 if (result) {
-                    return message.SUCCESS_CREATED_ITEM
+                    return message.SUCESS_CREATED_ITEM
                 }else{
                     return message.ERROR_INTERNAL_SERVER_MODEL
                 }
@@ -26,29 +28,30 @@ const inserirUsuario = async (usuario, contentType) => {
         }
     } catch (error) {
         console.log(error)
-        return message.ERROR_INTERNAL_SERVER_CONTROLER
+        return message.ERROR_INTERNAL_SERVER_CONTROLLER
     }
 }
 
-const atualizarUsuario = async (id, usuario, contentType) => {
+const atualizarEvento = async (id, evento, contentType) => {
     try {
         if (contentType == 'application/json') {
-            if (usuario.nome == ''                || usuario.nome == undefined            || usuario.nome == null             || usuario.nome.lenght>100            ||
-            usuario.email == ''                   || usuario.email == undefined           || usuario.email == null            || usuario.email.lenght>60            ||
-            usuario.senha == ''                   || usuario.senha == undefined           || usuario.senha == null            || usuario.senha>20                   ||
-            usuario.data_nascimento == ''         || usuario.data_nascimento == undefined || usuario.data_nascimento == null  || usuario.data_nascimento.lenght>10  ||
-            usuario.palavra_chave == undefined    || usuario.palavra_chave .lenght>15     ||
-            usuario.foto_perfil == undefined      || usuario.foto_perfil.lenght>500){
+            if (evento.titulo == ''                 || evento.titulo == undefined           || evento.titulo == null                                || evento.titulo.length>100              ||
+                evento.descricao == ''              || evento.descricao == undefined        || evento.descricao == null                             || evento.descricao.length>60            ||
+                evento.data_evento == ''            || evento.data_evento == undefined      || evento.data_evento == null                           || evento.data_evento.length>20          ||
+                evento.horario == ''                || evento.horario == undefined          || evento.horario == null  || evento.horario.length>10  ||
+                evento.horario == undefined         || evento.horario.length>15             || evento.horario == undefined                          || evento.horario.length>500             ||
+                evento.id_usuario == ''             || evento.id_usuario==undefined         || evento.id_usuario == null
+            ){
 
                 return message.ERROR_REQUIRED_FIELDS
             }
-            let result=await DAOevento.selectusuarioById(id)
+            let result=await DAOevento.selectEventoById(id)
             if (result != false || typeof(result)== 'object') {
                 if (result.length>0) {
-                    usuario.id=parseInt(id)
+                    evento.id=parseInt(id)
                     let result = await DAOusuario.updateGenro(genero)
                     if (result) {
-                        return message.SUCCESS_UPDATED_ITEM
+                        return message.SUCESS_UPDATED_ITEM
                     }else{
                         return message.ERROR_INTERNAL_SERVER_MODEL
                     }
@@ -63,24 +66,24 @@ const atualizarUsuario = async (id, usuario, contentType) => {
         }
     } catch (error) {
        console.log(error)
-       return message.ERROR_INTERNAL_SERVER_CONTROLER 
+       return message.ERROR_INTERNAL_SERVER_CONTROLLER 
     }
 }
 
-const excluirUsuario = async function (id){
+const excluirEvento = async function (id){
     try {
         if(id == '' || id == undefined || id == null || isNaN(id) || id <= 0){
             return message.ERROR_REQUIRED_FIELDS //400
         }else{
 
             //função que verifica se ID existe no BD
-            let results = await DAOevento.selectusuarioById(parseInt(id))
+            let results = await DAOevento.selectEventoById(parseInt(id))
 
             if(results != false || typeof(results) == 'object'){
                 //se exestir, faremos o delete
                 if(results.length > 0){
                     //delete    
-                    let result = await DAOUser.deleteUsuario(parseInt(id))
+                    let result = await DAOevento.deleteEvento(parseInt(id))
 
                     if(result){
                         return message.SUCCESS_DELETED_ITEM
@@ -100,10 +103,10 @@ const excluirUsuario = async function (id){
     }
 }
 
-const listarUsuario = async function () {
+const listarEvento = async function () {
     try {
         let dados={}
-        let result = await DAOUser.selectAllUsuario()
+        let result = await DAOevento.selectAllEvento()
         
         if (result != false || typeof(result)=='object') {
         
@@ -112,6 +115,21 @@ const listarUsuario = async function () {
                 dados.status_code=200,
                 dados.itens=result.length
                 dados.usuario=result
+
+                for (const itemEvento of result) {
+                    /* Monta o objeto da classificação para retornar no Filme (1XN) */
+                    //Busca os dados da classificação na controller de classificacao
+                    let dadosUsuario = await controllerUsuario.buscarUsuario(itemEvento.id_usuario)
+                    //Adiciona um atributo classificação no JSON de filmes e coloca os dados da classificação
+                    itemEvento.usuario = dadosUsuario.usuario
+                    //Remover um atributo do JSON
+                    delete itemEvento.id_usuario
+
+                    arrayEvento.push(itemEvento)
+                }
+
+                dados.eventos= arrayEvento
+
                 return dados
             }else{
                 return message.ERROR_NOT_FOUND
@@ -121,18 +139,18 @@ const listarUsuario = async function () {
         }
         //cha,a a funcao para retornarusuarios cadastrados
     } catch (error) {
-        return message.ERROR_INTERNAL_SERVER_CONTROLER ///500
+        return message.ERROR_INTERNAL_SERVER_CONTROLLER ///500
     }
 }
 
-const buscarUsuario = async function (id) {
+const buscarEvento = async function (id) {
     let dados={}
     try {
         if (id == ''|| id == undefined|| id == null|| id<0 
         ) {
             return message.ERROR_REQUIRED_FIELDS //400
         }else{
-            let result = await DAOUser.selectusuarioById(id)
+            let result = await DAOevento.selectEventoById(id)
             if (result != false || typeof(result)=='object'){
                 if (result.length>0) {
                     dados={
@@ -149,14 +167,14 @@ const buscarUsuario = async function (id) {
             }
         }
     } catch (error) {
-        return message.ERROR_INTERNAL_SERVER_CONTROLER
+        return message.ERROR_INTERNAL_SERVER_CONTROLLER
     }
 }
 
 module.exports={
-    inserirUsuario,
-    listarUsuario,
-    buscarUsuario,
-    excluirUsuario,
-    atualizarUsuario
+    inserirEvento,
+    atualizarEvento,
+    excluirEvento,
+    listarEvento,
+    buscarEvento
 }

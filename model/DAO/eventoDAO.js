@@ -22,7 +22,8 @@ const inserirEvento = async (dados) => {
             local,
             imagem,
             limite_participantes,
-            valor_ingresso
+            valor_ingresso,
+            id_usuario
           ) VALUES (
             '${dados.titulo}',
             '${dados.descricao}',
@@ -31,7 +32,8 @@ const inserirEvento = async (dados) => {
             '${dados.local}',
             '${dados.imagem}',
             '${dados.limite_participantes}',
-            '${dados.valor_ingresso}'
+            '${dados.valor_ingresso}',
+            '${dados.id_usuario}'
           )`
     
         let result = await prisma.$executeRawUnsafe(sql);
@@ -53,7 +55,8 @@ const updateEvento = async (dados) => {
             local,
             imagem,
             limite_participantes,
-            valor_ingresso
+            valor_ingresso,
+            id_usuario
           ) VALUES (
             '${dados.titulo}',
             '${dados.descricao}',
@@ -62,7 +65,8 @@ const updateEvento = async (dados) => {
             '${dados.local}',
             '${dados.imagem}',
             '${dados.limite_participantes}',
-            '${dados.valor_ingresso}'
+            '${dados.valor_ingresso}',
+            '${dados.id_usuario}'
           ) where id =${dados.id}`
                     
 
