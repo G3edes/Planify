@@ -113,7 +113,7 @@ const selectAllEvento = async function(){
 
 const selectEventoById = async function(id){
     try {
-        let sql = `select * from tbl_evento where id = ${id}`
+        let sql = `select * from tbl_evento where id_evento = ${id}`
 
         let result = await prisma.$queryRawUnsafe(sql)
 
@@ -122,6 +122,7 @@ const selectEventoById = async function(id){
         else 
             return false
     } catch (error) {
+        console.log(error)
         return false
     }
 }

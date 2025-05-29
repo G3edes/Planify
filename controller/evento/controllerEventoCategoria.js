@@ -104,7 +104,7 @@ const listarEventoCategoria = async function () {
         //Objeto do tipo JSON
         let dadosgenero = {}
         //Chama a função para retornar os generos cadastrados
-        let resultgenero = await eventoCategoriaDAO.selectAllFilmeGenero()
+        let resultgenero = await eventoCategoriaDAO.selectAllEventoCategoria()
 
         if (resultgenero != false || typeof (resultgenero) == 'object') {
             if (resultgenero.length > 0) {

@@ -6,16 +6,17 @@ const prisma = new PrismaClient()
 
 //Função para inserir um novo FilmeGenero
 const insertParticiparEvento = async function(eventoParticipante){
+  console.log(eventoParticipante)
   try {
 
-      let sql = `insert into tbl_participar_evento  ( 
-                                          id_evento,
-                                          id_usuario
+      let sql = `insert into tbl_participar_evento( 
+                                          id_usuario,
+                                          id_evento
                                         ) 
                                           values 
                                         (
-                                          ${eventoParticipante.id_evento},
-                                          ${eventoParticipante.id_usuario}
+                                          ${eventoParticipante.id_usuario},
+                                          ${eventoParticipante.id_evento}
                                         )`
 
       //Executa o scriptSQL no banco de dados e aguarda o retorno do BD para                                  

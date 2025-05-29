@@ -164,10 +164,9 @@ const buscarUsuarioPorEvento = async function (id) {
             
         } else {
             let dadosusuario = {}
-
+            console.log(resultUsuario)
             let resultUsuario = await participarEventoDAO.selectUsuarioByIdEvento(parseInt(id))
-            resultUsuario
-
+            console.log(resultUsuario)
             if (resultUsuario != false || typeof (resultUsuario) == 'object') {
                 if (resultUsuario.length > 0) {
                     //Criando um JSON de retorno de dados para a API

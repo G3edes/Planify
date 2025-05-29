@@ -223,7 +223,7 @@ const buscarEvento = async function (id) {
                         status_code:200,
                         usuario:result
                     }
-                    return dadosGenero
+                    return dados
                 }else{
                     return message.ERROR_NOT_FOUND//404
                 }
@@ -232,6 +232,7 @@ const buscarEvento = async function (id) {
             }
         }
     } catch (error) {
+        console.log(error)
         return message.ERROR_INTERNAL_SERVER_CONTROLLER
     }
 }

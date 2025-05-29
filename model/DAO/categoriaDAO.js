@@ -62,7 +62,7 @@ const deleteCategoria = async function(id){
 
 const selectAllCategoria = async function(){
     try {
-        let sql = 'select * from tbl_categoria order by id desc'
+        let sql = 'select * from tbl_categoria order by id_categoria desc'
 
         let result = await prisma.$queryRawUnsafe(sql)
 
