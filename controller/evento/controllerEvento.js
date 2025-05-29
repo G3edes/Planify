@@ -188,6 +188,8 @@ const listarEvento = async function () {
                     //delete itemFilme.id_genero
                     let dadosParticipante = await controllerParticipante.buscarUsuarioPorEvento(itemEvento.id_evento)
                     itemEvento.participante = dadosParticipante.participante
+                    
+                    
 
                     arrayEventos.push(itemEvento)
                 }
@@ -222,6 +224,8 @@ const buscarEvento = async function (id) {
                         status:true,
                         status_code:200,
                         usuario:result
+
+                        
                     }
                     return dados
                 }else{

@@ -157,14 +157,13 @@ const buscarParticiparEvento = async function (id) {
 }
 
 const buscarUsuarioPorEvento = async function (id) {
+    
     try {
         if (id == '' || id == undefined || id == null || isNaN(id) || id <= 0) {
             
             return message.ERROR_REQUIRED_FIELDS //400
-            
         } else {
             let dadosusuario = {}
-            console.log(resultUsuario)
             let resultUsuario = await participarEventoDAO.selectUsuarioByIdEvento(parseInt(id))
             console.log(resultUsuario)
             if (resultUsuario != false || typeof (resultUsuario) == 'object') {
@@ -183,6 +182,7 @@ const buscarUsuarioPorEvento = async function (id) {
             }
         }
     } catch (error) {
+        console.log(error)
         return message.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
 }
@@ -193,7 +193,7 @@ const buscarEventoPorUsuario = async function (id) {
             return message.ERROR_REQUIRED_FIELDS //400
         } else {
             let dadosusuario = {}
-
+çç
             let resultUsuario = await participarEventoDAO.selectEventoByIdUsuario(parseInt(id))
 
             if (resultUsuario != false || typeof (resultUsuario) == 'object') {
