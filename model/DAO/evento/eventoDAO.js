@@ -36,11 +36,11 @@ const inserirEvento = async (dados) => {
             '${dados.id_usuario}'
           )`
     
-        let result = await prisma.$executeRawUnsafe(sql);
-        return result ? true : false;
+        let result = await prisma.$executeRawUnsafe(sql)
+        return result 
         }catch (error){
-        console.error('Erro ao inserir relação filme-genero:', error);
-        return false;
+        console.error('Erro ao inserir relação filme-genero:', error)
+        return false
     }
 }
 
