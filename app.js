@@ -32,10 +32,7 @@ const bodyParserJSON = bodyParser.json()
 const app = express()
 
 // Middleware para permitir requisições CORS
-app.use(cors({
-    origin: 'http://127.0.0.1:5501',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
-}))
+app.use(cors())
 
 // Corrige o cabeçalho CORS
 app.use((req, res, next) => {
