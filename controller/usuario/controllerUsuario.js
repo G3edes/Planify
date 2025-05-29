@@ -4,7 +4,7 @@ const message =require('../../modulo/config.js')
 const inserirUsuario = async (usuario, contentType) => {
     try {
         if (contentType && contentType.includes('application/json')) {
-
+            let dados ={}
             if (usuario.nome == ''                || usuario.nome == undefined            || usuario.nome == null             || usuario.nome.length>100            ||
             usuario.email == ''                   || usuario.email == undefined           || usuario.email == null            || usuario.email.length>60            ||
             usuario.senha == ''                   || usuario.senha == undefined           || usuario.senha == null            || usuario.senha.length>20                   ||
@@ -16,7 +16,14 @@ const inserirUsuario = async (usuario, contentType) => {
             }else{
                 let result = await DAOUser.inserirUsuario(usuario)
                 if (result) {
-                    return message.SUCESS_CREATED_ITEM
+                    let lastid = await DAOUser.selectLastId()
+                    dados={
+                        status:true,
+                        status_code:200,
+                        UsuarioID:lastid,
+                        usuario:usuario
+                    }
+                    return dados
                 }else{
                     return message.ERROR_INTERNAL_SERVER_MODEL
                 }

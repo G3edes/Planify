@@ -135,11 +135,11 @@ const selectUsuarioByIdEvento = async function(idEvento){
 }
 
 module.exports = {
-    insertEventoCategoria,
-    updateEventoCategoria,
-    deleteEventoCategoria,
-    selectAllEventoCategoria,
-    selectByIdEventoCategoria,
-    selectEventoByIdCategoria,
-    selectCategoriaByIdEvento
+    insertParticiparEvento,
+    updateParticiparEvento,
+    deleteParticiparEvento,
+    selectAllParticiparEvento,
+    selectByIdParticiparEvento,
+    selectEventoByIdUsuario,
+    selectUsuarioByIdEvento
 } 

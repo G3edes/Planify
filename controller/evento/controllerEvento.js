@@ -1,8 +1,10 @@
 const DAOevento=require('../../model/DAO/evento/eventoDAO.js')
 const DAOeventoCategoria = require ('../../model/DAO/evento/evento_categoriaDAO.js')
+const DAOeventoParticipante = require ('../../model/DAO/evento/participar_evento.js')
 
 const controllerEventoCategoria = require ('../../controller/evento/controllerEventoCategoria.js')
 const controllerUsuario=require('../../controller/usuario/controllerUsuario.js')
+const controllerParticipante = require('./controllerParticiparEvento.js')
 
 const message =require('../../modulo/config.js')
 
@@ -10,7 +12,7 @@ const inserirEvento = async (evento, contentType) => {
     
     try {
         if (contentType && contentType.includes('application/json')) {
-            
+            dados={}
             if (
                 evento.titulo == '' || evento.titulo == undefined || evento.titulo == null || evento.titulo.length > 100 ||
                 evento.descricao == '' || evento.descricao == undefined || evento.descricao == null || evento.descricao.length > 60 ||
@@ -42,7 +44,30 @@ const inserirEvento = async (evento, contentType) => {
                             }
                         }
                     }
-                    return message.SUCESS_CREATED_ITEM
+                    if (evento.participante && Array.isArray(evento.participante)) {
+                        let eventoInserido = await DAOevento.selectLastId()
+                        //Pegando o ultimo id inserido
+                        let idEvento = eventoInserido[0].id_evento //vendo se volta id
+
+                        for (let participante of evento.participante) {
+                            if (participante.id_usuario && !isNaN(participante.id_usuario)) {
+                                let eventoParticipante = {
+                                    id_evento: idEvento,
+                                    id_usuario: participante.id_usuario
+                                }
+                                await  DAOeventoParticipante.insertParticiparEvento(eventoParticipante)
+                            }
+                        }
+                    }
+                    let lastid = await DAOevento.selectLastId()
+                    dados={
+                        status:true,
+                        status_code:200,
+                        eventoID:lastid,
+                        evento:evento
+                    }
+                    return dados
+                    
                 }else{
                     return message.ERROR_INTERNAL_SERVER_MODEL
                 }
@@ -158,13 +183,11 @@ const listarEvento = async function () {
                     delete itemEvento.id_usuario
                     
                     let dadosCategoria = await controllerEventoCategoria.buscarCategoriaPorEvento(itemEvento.id_evento)
-                    
-                    
-                    
                     itemEvento.categoria = dadosCategoria.categoria
                 
                     //delete itemFilme.id_genero
-
+                    let dadosParticipante = await controllerParticipante.buscarUsuarioPorEvento(itemEvento.id_evento)
+                    itemEvento.participante = dadosParticipante.participante
 
                     arrayEventos.push(itemEvento)
                 }

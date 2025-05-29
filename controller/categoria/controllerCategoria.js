@@ -2,6 +2,7 @@ const DAOCategoria=require('../../model/DAO/categoriaDAO.js')
 const message =require('../../modulo/config.js')
 
 const inserirCategoria = async (categoria, contentType) => {
+    let dados = {}
     try {
         if (contentType && contentType.includes('application/json')) {
 

@@ -107,11 +107,26 @@ const selectusuarioById = async function(id){
         return false
     }
 }
+const selectLastId = async function() {
+    try {
+        let sql = 'select id_usuario from tbl_usuario order by id_usuario desc limit 1'
+        let result = await prisma.$queryRawUnsafe(sql)
+        if (result)
+            return result
+        else
+            return false
+    } catch (error) {
+        console.log(error)
+        return false
+    }
+}
+
 
 module.exports = {
     inserirUsuario,
     updateUsuario,
     deleteUsuario,
     selectAllUsuario,
-    selectusuarioById
+    selectusuarioById,
+    selectLastId
 }
