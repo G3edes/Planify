@@ -63,6 +63,25 @@ const updateUsuario = async (dados) => {
     }
 }
 
+const updateSenhaUsuario = async (dados) => {
+    
+    try {
+        let sql = `update tbl_usuario set
+                            senha = '${dados.senha}'
+                    where id_usuario = ${dados.id}`
+
+        let resultFilme = await prisma.$executeRawUnsafe(sql)
+
+        if(resultFilme)
+            return true
+        else
+            return false
+    } catch (error) {
+        console.log(error)
+        return false
+    }
+}
+
 const deleteUsuario = async function(id){
     try {
         let sql = `delete from tbl_usuario where id_usuario = ${id}`
@@ -128,5 +147,6 @@ module.exports = {
     deleteUsuario,
     selectAllUsuario,
     selectusuarioById,
-    selectLastId
+    selectLastId,
+    updateSenhaUsuario
 }

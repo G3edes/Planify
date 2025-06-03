@@ -76,7 +76,36 @@ const atualizarUsuario = async (id, usuario, contentType) => {
        return message.ERROR_INTERNAL_SERVER_CONTROLLER 
     }
 }
-
+const atualizarSenhaUsuario = async (id, usuario, contentType) => {
+    try {
+        if (contentType == 'application/json') {
+            if (usuario.senha == ''                || usuario.senha == undefined            || usuario.senha == null             || usuario.senha.length>100            ){
+                return message.ERROR_REQUIRED_FIELDS
+            }
+            let result=await DAOUser.selectusuarioById(id)
+            if (result != false || typeof(result)== 'object') {
+                if (result.length>0) {
+                    usuario.id=parseInt(id)
+                    
+                    let result = await DAOUser.updateSenhaUsuario(usuario)
+                    if (result) {
+                        return message.SUCESS_UPDATED_ITEM
+                    }else{
+                        return message.ERROR_INTERNAL_SERVER_MODEL
+                    }
+                }else{
+                    return message.ERROR_NOT_FOUND
+                }
+            }else{
+                return message.ERROR_INTERNAL_SERVER_MODEL
+            }
+        }else{
+            return message.ERROR_CONTENT_TYPE
+        }
+    } catch (error) {
+       return message.ERROR_INTERNAL_SERVER_CONTROLLER 
+    }
+}
 const excluirUsuario = async function (id){
     try {
         if(id == '' || id == undefined || id == null || isNaN(id) || id <= 0){
@@ -208,5 +237,6 @@ module.exports={
     listarUsuario,
     buscarUsuario,
     excluirUsuario,
-    atualizarUsuario
+    atualizarUsuario,
+    atualizarSenhaUsuario
 }

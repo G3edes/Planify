@@ -65,6 +65,18 @@ app.post('/v1/planify/usuario', cors(), bodyParserJSON, async function (request,
     response.status(result.status_code)
     response.json(result)
 })
+app.put('/v1/planify/usuario/senha/:id', cors(), bodyParserJSON, async function (request, response) {
+    //recebe o content-type da requisição
+    let contentType=request.headers['content-type']
+    //recebe do body da requisição os dados encaminhados
+
+    let id = request.params.id
+    //body da requisição
+    let dadosBody=request.body
+    let result= await  controllerUsuario.atualizarSenhaUsuario(id, dadosBody, contentType)
+    response.status(result.status_code)
+    response.json(result)
+})
 app.get('/v1/planify/usuario', cors(), async function (request, response) {
     let result= await controllerUsuario.listarUsuario()
     response.status(result.status_code)
