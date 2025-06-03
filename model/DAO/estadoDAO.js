@@ -1,6 +1,6 @@
 /***************************************************************************************************************************
- * OBJETIVO: Criar a comunicação com o Banco de Dados para fazer o CRUD de categoria
- * DATA: 20/05/2025
+ * OBJETIVO: Criar a comunicação com o Banco de Dados para fazer o CRUD de estado
+ * DATA: 03/05/2025
  * AUTOR: Gabriel Guedes
  * Versão: 1.0
  **************************************************************************************************************************/
@@ -11,32 +11,31 @@ const { PrismaClient } = require('@prisma/client')
 //Instancia (criar um objeto a ser utilizado) a biblioteca do prisma/client
 const prisma = new PrismaClient()
 
-const inserirCategoria = async (dados) => {
+const inserirEstado = async (dados) => {
     try {
         let sql = `
-          INSERT INTO tbl_categoria (
-            categoria
+          INSERT INTO tbl_estado (
+            estado
           ) VALUES (
-            '${dados.categoria}'
+            '${dados.estado}'
           )`
     
         let result = await prisma.$executeRawUnsafe(sql);
         return result ? true : false;
         }catch (error){
-        console.error('Erro ao inserir relação filme-genero:', error);
         return false;
     }
 }
 
-const updateCategoria = async (dados) => {
+const updateEstado = async (dados) => {
     try {
-        let sql = `update tbl_categoria set
-                            categoria = '${dados.categoria}'
-                    where id_categoria = ${dados.id}`
+        let sql = `update tbl_estado set
+                            estado = '${dados.estado}'
+                    where id_estado = ${dados.id}`
 
-        let resultFilme = await prisma.$executeRawUnsafe(sql)
+        let resultEstado = await prisma.$executeRawUnsafe(sql)
 
-        if(resultFilme)
+        if(resultEstado)
             return true
         else
             return false
@@ -45,9 +44,9 @@ const updateCategoria = async (dados) => {
     }
 }
 
-const deleteCategoria = async function(id){
+const deleteEstado= async function(id){
     try {
-        let sql = `delete from tbl_categoria where id_categoria = ${id}`
+        let sql = `delete from tbl_estado where id_estado = ${id}`
 
         let result = await prisma.$executeRawUnsafe(sql)
 
@@ -60,9 +59,9 @@ const deleteCategoria = async function(id){
     }
 }
 
-const selectAllCategoria = async function(){
+const selectAllEstado = async function(){
     try {
-        let sql = 'select * from tbl_categoria order by id_categoria desc'
+        let sql = 'select * from tbl_estado order by id_estado desc'
 
         let result = await prisma.$queryRawUnsafe(sql)
 
@@ -75,9 +74,9 @@ const selectAllCategoria = async function(){
     }
 }
 
-const selectCategoriaById = async function(id){
+const selectEstadoById = async function(id){
     try {
-        let sql = `select * from tbl_categoria where id_categoria = ${id}`
+        let sql = `select * from tbl_estado where id_estado = ${id}`
 
         let result = await prisma.$queryRawUnsafe(sql)
 
@@ -91,9 +90,9 @@ const selectCategoriaById = async function(id){
 }
 
 module.exports = {
-    inserirCategoria,
-    updateCategoria,
-    deleteCategoria,
-    selectAllCategoria,
-    selectCategoriaById
+    inserirEstado,
+    updateEstado,
+    deleteEstado,
+    selectAllEstado,
+    selectEstadoById
 }

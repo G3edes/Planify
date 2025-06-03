@@ -23,7 +23,8 @@ const inserirEvento = async (dados) => {
             imagem,
             limite_participante,
             valor_ingresso,
-            id_usuario
+            id_usuario,
+            id_estado
           ) VALUES (
             '${dados.titulo}',
             '${dados.descricao}',
@@ -33,7 +34,8 @@ const inserirEvento = async (dados) => {
             '${dados.imagem}',
             '${dados.limite_participante}',
             '${dados.valor_ingresso}',
-            '${dados.id_usuario}'
+            '${dados.id_usuario}',
+            '${dados.id_estado}'
           )`
     
         let result = await prisma.$executeRawUnsafe(sql)

@@ -16,6 +16,10 @@ CREATE TABLE tbl_categoria (
     id_categoria INT PRIMARY KEY AUTO_INCREMENT,
     categoria VARCHAR(50) NOT NULL UNIQUE
 );
+CREATE TABLE tbl_estado (
+    id_estado INT PRIMARY KEY AUTO_INCREMENT,
+    estado VARCHAR(50) NOT NULL UNIQUE
+);
 
 CREATE TABLE tbl_evento (
     id_evento INT PRIMARY KEY AUTO_INCREMENT,
@@ -31,6 +35,11 @@ CREATE TABLE tbl_evento (
     CONSTRAINT fk_usuario_evento
         FOREIGN KEY (id_usuario)
         REFERENCES tbl_usuario(id_usuario)
+        ON DELETE CASCADE
+    id_estado INT NOT NULL,
+    CONSTRAINT fk_estado_evento
+        FOREIGN KEY (id_estado)
+        REFERENCES tbl_estado(id_estado)
         ON DELETE CASCADE
 );
 

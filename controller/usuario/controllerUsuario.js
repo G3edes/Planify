@@ -1,4 +1,8 @@
 const DAOUser=require('../../model/DAO/usuarioDAO.js')
+
+const controllerEvento = require('../evento/controllerEvento.js')
+const controllerEventoUsuario = require('../evento/controllerParticiparEvento.js')
+
 const message =require('../../modulo/config.js')
 
 const inserirUsuario = async (usuario, contentType) => {
@@ -108,6 +112,7 @@ const excluirUsuario = async function (id){
 
 const listarUsuario = async function () {
     try {
+        let arrayEventos=[]
         let dados={}
         let result = await DAOUser.selectAllUsuario()
         if (result != false || typeof(result)=='object') {
@@ -117,7 +122,28 @@ const listarUsuario = async function () {
                 dados.status_code=200,
                 dados.itens=result.length
                 dados.usuario=result
+
+                for (const itemUsuario of result) {
+                    /* Monta o objeto da classificação para retornar no Filme (1XN) */
+                    //Busca os dados da classificação na controller de classificacao
+                    let dadosEvento = await controllerEvento.buscarEvento(itemUsuario.id_evento)
+                    //Adiciona um atributo classificação no JSON de filmes e coloca os dados da classificação
+                    itemUsuario.evento = dadosEvento.evento
+                    //Remover um atributo do JSON
+                    delete itemUsuario.id_evento
+                    
+                    let eventos = await controllerEventoUsuario.buscarEventoPorUsuario(itemUsuario.id_usuario)
+                    itemUsuario.eventos = eventos
+                    
+                    
+
+                    arrayEventos.push(itemUsuario)
+                }
+                
+                
+
                 return dados
+
             }else{
                 return message.ERROR_NOT_FOUND
             }
@@ -126,12 +152,14 @@ const listarUsuario = async function () {
         }
         //cha,a a funcao para retornarusuarios cadastrados
     } catch (error) {
+        console.log(error)
         return message.ERROR_INTERNAL_SERVER_CONTROLLER ///500
     }
 }
 
 const buscarUsuario = async function (id) {
     let dados={}
+    let arrayEventos=[]
     try {
         if (id == ''|| id == undefined|| id == null|| id<0 
         ) {
@@ -140,12 +168,28 @@ const buscarUsuario = async function (id) {
             let result = await DAOUser.selectusuarioById(id)
             if (result != false || typeof(result)=='object'){
                 if (result.length>0) {
-                    dados={
-                        status:true,
-                        status_code:200,
-                        usuario:result
+                    dados.status=true,
+                    dados.status_code=200,
+                    dados.usuario=result
+
+                    for (const itemUsuario of result) {
+                        /* Monta o objeto da classificação para retornar no Filme (1XN) */
+                        //Busca os dados da classificação na controller de classificacao
+                        let dadosEvento = await controllerEvento.buscarEvento(itemUsuario.id_evento)
+                        //Adiciona um atributo classificação no JSON de filmes e coloca os dados da classificação
+                        itemUsuario.evento = dadosEvento.evento
+                        //Remover um atributo do JSON
+                        delete itemUsuario.id_evento
+                        
+                        let eventos = await controllerEventoUsuario.buscarEventoPorUsuario(itemUsuario.id_usuario)
+                        itemUsuario.eventos = eventos
+                        
+                        
+    
+                        arrayEventos.push(itemUsuario)
                     }
                     return dados
+                    
                 }else{
                     return message.ERROR_NOT_FOUND//404
                 }

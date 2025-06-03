@@ -192,7 +192,6 @@ const buscarEventoPorUsuario = async function (id) {
             return message.ERROR_REQUIRED_FIELDS //400
         } else {
             let dadosusuario = {}
-çç
             let resultUsuario = await participarEventoDAO.selectEventoByIdUsuario(parseInt(id))
 
             if (resultUsuario != false || typeof (resultUsuario) == 'object') {
@@ -216,6 +215,40 @@ const buscarEventoPorUsuario = async function (id) {
     }
 }
 
+// controllerShared.js
+
+const DAOUser = require('../../model/DAO/usuarioDAO.js')
+
+// apenas lógica de buscar usuário
+const buscarUsuario = async function (id) {
+    let dados = {}
+    let arrayEventos = []
+    try {
+        if (id == ''|| id == undefined|| id == null|| id<0 ) {
+            return message.ERROR_REQUIRED_FIELDS //400
+        } else {
+            let result = await DAOUser.selectusuarioById(id)
+            if (result != false || typeof(result)=='object'){
+                if (result.length > 0) {
+                    dados.status = true
+                    dados.status_code = 200
+                    dados.usuario = result
+                    return dados
+                } else {
+                    return message.ERROR_NOT_FOUND //404
+                }
+            } else {
+                return message.ERROR_INTERNAL_SERVER_MODEL //500
+            }
+        }
+    } catch (error) {
+        console.log(error)
+        return message.ERROR_INTERNAL_SERVER_CONTROLLER
+    }
+}
+
+    
+
 module.exports = {
     inserirParticiparEvento,
     atualizarParticiparEvento,
@@ -223,5 +256,6 @@ module.exports = {
     listarParticiparEvento,
     buscarParticiparEvento,
     buscarUsuarioPorEvento,
-    buscarEventoPorUsuario
+    buscarEventoPorUsuario,
+    buscarUsuario
 } 

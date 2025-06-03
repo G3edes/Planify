@@ -98,7 +98,7 @@ const selectEventoByIdUsuario = async function(id_usuario){
     try {
         let sql = `select tbl_evento.* from tbl_evento 
                                               inner join tbl_participar_evento
-                                                on tbl_evento.id = tbl_participar_evento.id_evento
+                                                on tbl_evento.id_evento = tbl_participar_evento.id_evento
                                               inner join tbl_usuario
                                                 on tbl_usuario.id_usuario = tbl_participar_evento.id_usuario
                     where tbl_participar_evento.id_usuario = ${id_usuario}`
@@ -110,6 +110,7 @@ const selectEventoByIdUsuario = async function(id_usuario){
       else 
           return false
     } catch (error) {
+      console.log(error)
         return false
     }
 }

@@ -14,15 +14,16 @@ const inserirEvento = async (evento, contentType) => {
         if (contentType && contentType.includes('application/json')) {
             dados={}
             if (
-                evento.titulo == '' || evento.titulo == undefined || evento.titulo == null || evento.titulo.length > 100 ||
-                evento.descricao == '' || evento.descricao == undefined || evento.descricao == null || evento.descricao.length > 60 ||
-                evento.data_evento == '' || evento.data_evento == undefined || evento.data_evento == null || evento.data_evento.length > 20 ||
-                evento.horario == '' || evento.horario == undefined || evento.horario == null || evento.horario.length > 15 ||
-                evento.local == '' || evento.local == undefined || evento.local == null || evento.local.length > 70 ||
-                evento.imagem == '' || evento.imagem == undefined || evento.imagem == null || evento.imagem.length > 500 ||
-                evento.limite_participante == '' || evento.limite_participante == undefined || evento.limite_participante == null ||
-                evento.valor_ingresso == '' || evento.valor_ingresso == undefined || evento.valor_ingresso == null ||
-                evento.id_usuario == '' || evento.id_usuario == undefined || evento.id_usuario == null
+                evento.titulo == ''              || evento.titulo == undefined               || evento.titulo == null              || evento.titulo.length > 100    ||
+                evento.descricao == ''           || evento.descricao == undefined            || evento.descricao == null           || evento.descricao.length > 60  ||
+                evento.data_evento == ''         || evento.data_evento == undefined          || evento.data_evento == null         || evento.data_evento.length > 20||
+                evento.horario == ''             || evento.horario == undefined              || evento.horario == null             || evento.horario.length > 15    ||
+                evento.local == ''               || evento.local == undefined                || evento.local == null               || evento.local.length > 70      ||
+                evento.imagem == ''              || evento.imagem == undefined               || evento.imagem == null              || evento.imagem.length > 500    ||
+                evento.limite_participante == '' || evento.limite_participante == undefined  || evento.limite_participante == null ||
+                evento.valor_ingresso == ''      || evento.valor_ingresso == undefined       || evento.valor_ingresso == null      ||
+                evento.id_usuario == ''          || evento.id_usuario == undefined           || evento.id_usuario == null          || 
+                evento.id_estado == ''          || evento.id_estado == undefined           || evento.id_estado == null
             ) {
 
                 return message.ERROR_REQUIRED_FIELDS
@@ -93,7 +94,7 @@ const atualizarEvento = async (id, evento, contentType) => {
                 evento.imagem == '' || evento.imagem == undefined || evento.imagem == null || evento.imagem.length > 500 ||
                 evento.limite_participante == '' || evento.limite_participante == undefined || evento.limite_participante == null ||
                 evento.valor_ingresso == '' || evento.valor_ingresso == undefined || evento.valor_ingresso == null ||
-                evento.id_usuario == '' || evento.id_usuario == undefined || evento.id_usuario == null
+                evento.id_usuario == '' || evento.id_usuario == undefined || evento.id_usuario == null ||  evento.id_estado == ''          || evento.id_estado == undefined           || evento.id_estado == null
             ) {
 
                 return message.ERROR_REQUIRED_FIELDS
@@ -176,7 +177,7 @@ const listarEvento = async function () {
                 for (const itemEvento of result) {
                     /* Monta o objeto da classificação para retornar no Filme (1XN) */
                     //Busca os dados da classificação na controller de classificacao
-                    let dadosUsuario = await controllerUsuario.buscarUsuario(itemEvento.id_usuario)
+                    let dadosUsuario = await controllerParticipante.buscarUsuario(itemEvento.id_usuario)
                     //Adiciona um atributo classificação no JSON de filmes e coloca os dados da classificação
                     itemEvento.usuario = dadosUsuario.usuario
                     //Remover um atributo do JSON
