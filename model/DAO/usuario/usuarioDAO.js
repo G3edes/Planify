@@ -19,21 +19,20 @@ const inserirUsuario = async (dados) => {
             email,
             senha,
             data_nascimento,
-            foto_perfil,
+            foto_perfil
           ) VALUES (
             '${dados.nome}',
             '${dados.email}',
             '${dados.senha}',
             '${dados.data_nascimento}',
-            '${dados.foto_perfil}',
-            '${dados.palavra_chave}'
+            '${dados.foto_perfil}'
           )
         `;
     
         let result = await prisma.$executeRawUnsafe(sql);
         return result ? true : false;
         }catch (error){
-        console.error('Erro ao inserir relação filme-genero:', error);
+        console.error(error);
         return false;
     }
 }

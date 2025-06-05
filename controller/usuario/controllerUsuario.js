@@ -171,7 +171,7 @@ const listarUsuario = async function () {
 
                 return dados
 
-            }else{
+            }else{ 
                 return message.ERROR_NOT_FOUND
             }
         }else{

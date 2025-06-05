@@ -156,6 +156,7 @@ app.put('/v1/planify/evento/:id', cors(), bodyParserJSON,async function (request
     response.json(result)
 })
 
+
 /*******************************************************************************************************************
  * 
  *                                      CATEGORIA
@@ -181,6 +182,12 @@ app.get('/v1/planify/categoria', cors(), async function (request, response) {
 app.get('/v1/planify/categoria/:id', cors(), async function (request, response) {
     let id=request.params.id
     let result= await controllerCategoria.buscarCategoria(id)
+    response.status(result.status_code)
+    response.json(result)
+})
+app.get('/v1/planify/categoria/evento/:id', cors(), async function (request, response) {
+    let id=request.params.id
+    let result= await controllerCategoria.buscarEventoCategoria(id)
     response.status(result.status_code)
     response.json(result)
 })
@@ -231,6 +238,12 @@ app.get('/v1/planify/estado/:id', cors(), async function (request, response) {
     response.status(result.status_code)
     response.json(result)
 })
+/*app.get('/v1/planify/estado/evento/:id', cors(), async function (request, response) {
+    let id=request.params.id
+    let result= await controllerEstado.buscarEstado(id)
+    response.status(result.status_code)
+    response.json(result)
+})*/
 app.delete('/v1/planify/estado/:id', cors(), async function (request, response){
     let id = request.params.id
     let result = await controllerEstado.excluirEstado(id)

@@ -56,6 +56,7 @@ const inserirEvento = async (evento, contentType) => {
                                     id_evento: idEvento,
                                     id_usuario: participante.id_usuario
                                 }
+                    
                                 await  DAOeventoParticipante.insertParticiparEvento(eventoParticipante)
                             }
                         }
@@ -213,6 +214,7 @@ const listarEvento = async function () {
 
 const buscarEvento = async function (id) {
     let dados={}
+    let arrayEventos =[]
     try {
         if (id == ''|| id == undefined|| id == null|| id<0 
         ) {
@@ -221,14 +223,38 @@ const buscarEvento = async function (id) {
             let result = await DAOevento.selectEventoById(id)
             if (result != false || typeof(result)=='object'){
                 if (result.length>0) {
-                    dados={
-                        status:true,
-                        status_code:200,
-                        usuario:result
+                    if(result.length>0){
+                        dados.status=true
+                        dados.status_code=200,
+                        dados.itens=result.length
+                        dados.eventos=result
 
+                        for (const itemEvento of result) {
+                            /* Monta o objeto da classificação para retornar no Filme (1XN) */
+                            //Busca os dados da classificação na controller de classificacao
+                            let dadosUsuario = await controllerParticipante.buscarUsuario(itemEvento.id_usuario)
+                            //Adiciona um atributo classificação no JSON de filmes e coloca os dados da classificação
+                            itemEvento.usuario = dadosUsuario.usuario
+                            //Remover um atributo do JSON
+                            delete itemEvento.id_usuario
+                            
+                            let dadosCategoria = await controllerEventoCategoria.buscarCategoriaPorEvento(itemEvento.id_evento)
+                            itemEvento.categoria = dadosCategoria.categoria
                         
+                            //delete itemFilme.id_genero
+                            let dadosParticipante = await controllerParticipante.buscarUsuarioPorEvento(itemEvento.id_evento)
+                            itemEvento.participante = dadosParticipante.usuario
+                            
+                            
+
+                            arrayEventos.push(itemEvento)
+                        }
+                        
+                        dados.eventos = arrayEventos
+
+                        return dados
                     }
-                    return dados
+
                 }else{
                     return message.ERROR_NOT_FOUND//404
                 }

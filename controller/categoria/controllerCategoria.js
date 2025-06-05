@@ -1,4 +1,5 @@
 const DAOCategoria=require('../../model/DAO/categoriaDAO.js')
+const DAOEventoCategoria=require('../../model/DAO/evento/eventoCategoriaDAO.js')
 const message =require('../../modulo/config.js')
 
 const inserirCategoria = async (categoria, contentType) => {
@@ -148,11 +149,41 @@ const buscarCategoria = async function (id) {
         return message.ERROR_INTERNAL_SERVER_CONTROLLER
     }
 }
+const buscarEventoCategoria = async function (id) {
+    let dados={}
+    try {
+        
+        if (id == ''|| id == undefined|| id == null|| id<0 
+        ) {
+            return message.ERROR_REQUIRED_FIELDS //400
+        }else{
+            let result = await DAOEventoCategoria.selectEventoByIdCategoria(id)
+            if (result != false || typeof(result)=='object'){
+                if (result.length>0) {
+                    dados={
+                        status:true,
+                        status_code:200,
+                        categoria:result
+                    }
+                    return dados
+                }else{
+                    return message.ERROR_NOT_FOUND//404
+                }
+            }else{
+                return message.ERROR_INTERNAL_SERVER_MODEL //500
+            }
+        }
+    } catch (error) {
+        console.log(error)
+        return message.ERROR_INTERNAL_SERVER_CONTROLLER
+    }
+}
 
 module.exports={
     inserirCategoria,
     listarCategoria,
     buscarCategoria,
     excluirCategoria,
-    atualizarCategoria
+    atualizarCategoria,
+    buscarEventoCategoria
 }

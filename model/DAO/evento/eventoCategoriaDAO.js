@@ -97,7 +97,7 @@ const selectEventoByIdCategoria = async function(id_categoria){
     try {
         let sql = `select tbl_evento.* from tbl_evento 
                                               inner join tbl_evento_categoria
-                                                on tbl_evento.id = tbl_evento_categoria.id_evento
+                                                on tbl_evento.id_evento = tbl_evento_categoria.id_evento
                                               inner join tbl_categoria
                                                 on tbl_categoria.id_categoria = tbl_evento_categoria.id_categoria
                     where tbl_evento_categoria.id_categoria = ${id_categoria}`

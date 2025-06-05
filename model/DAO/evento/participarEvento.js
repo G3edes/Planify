@@ -125,8 +125,6 @@ const selectUsuarioByIdEvento = async function(idEvento){
                      where tbl_participar_evento.id_evento = ${idEvento}`
                      
         let result = await prisma.$queryRawUnsafe(sql)
-         console.log(result)
-
     if (result)
         return result
     else 
