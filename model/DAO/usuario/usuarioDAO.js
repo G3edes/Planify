@@ -20,7 +20,6 @@ const inserirUsuario = async (dados) => {
             senha,
             data_nascimento,
             foto_perfil,
-            palavra_chave
           ) VALUES (
             '${dados.nome}',
             '${dados.email}',
@@ -48,7 +47,6 @@ const updateUsuario = async (dados) => {
                             senha = '${dados.senha}',
                             data_nascimento = '${dados.data_nascimento}',
                             foto_perfil = ${dados.foto_perfil ? `'${dados.foto_perfil}'` : null},
-                            palavra_chave = ${dados.palavra_chave ? `'${dados.palavra_chave}'` : null}
                     where id_usuario = ${dados.id}`
 
         let resultFilme = await prisma.$executeRawUnsafe(sql)

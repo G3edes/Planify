@@ -1,4 +1,4 @@
-const DAOUser=require('../../model/DAO/usuarioDAO.js')
+const DAOUser=require('../../model/DAO/usuario/usuarioDAO.js')
 
 const controllerEvento = require('../evento/controllerEvento.js')
 const controllerEventoUsuario = require('../evento/controllerParticiparEvento.js')
@@ -13,7 +13,6 @@ const inserirUsuario = async (usuario, contentType) => {
             usuario.email == ''                   || usuario.email == undefined           || usuario.email == null            || usuario.email.length>60            ||
             usuario.senha == ''                   || usuario.senha == undefined           || usuario.senha == null            || usuario.senha.length>20                   ||
             usuario.data_nascimento == ''         || usuario.data_nascimento == undefined || usuario.data_nascimento == null  || usuario.data_nascimento.length>10  ||
-            usuario.palavra_chave == undefined    || usuario.palavra_chave .length>15     ||
             usuario.foto_perfil == undefined      || usuario.foto_perfil.length>500){
 
                 return message.ERROR_REQUIRED_FIELDS
@@ -48,7 +47,6 @@ const atualizarUsuario = async (id, usuario, contentType) => {
             usuario.email == ''                   || usuario.email == undefined           || usuario.email == null            || usuario.email.length>60            ||
             usuario.senha == ''                   || usuario.senha == undefined           || usuario.senha == null            || usuario.senha.length>20                   ||
             usuario.data_nascimento == ''         || usuario.data_nascimento == undefined || usuario.data_nascimento == null  || usuario.data_nascimento.length>10  ||
-            usuario.palavra_chave == undefined    || usuario.palavra_chave .length>15     ||
             usuario.foto_perfil == undefined      || usuario.foto_perfil.length>500){
                 return message.ERROR_REQUIRED_FIELDS
             }

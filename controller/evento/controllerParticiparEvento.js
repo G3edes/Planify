@@ -1,7 +1,7 @@
 //Import do arquivo dee mensagens e status code do projeto
 const message = require('../../modulo/config.js')
 
-const participarEventoDAO = require('../../model/DAO/evento/participar_evento')
+const participarEventoDAO = require('../../model/DAO/evento/participarEvento.js')
 
 const inserirParticiparEvento = async function (participarEvento, contentType) {
     try {
@@ -217,7 +217,7 @@ const buscarEventoPorUsuario = async function (id) {
 
 // controllerShared.js
 
-const DAOUser = require('../../model/DAO/usuarioDAO.js')
+const DAOUser = require('../../model/DAO/usuario/usuarioDAO.js')
 
 // apenas lógica de buscar usuário
 const buscarUsuario = async function (id) {

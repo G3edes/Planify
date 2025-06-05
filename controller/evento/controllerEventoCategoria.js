@@ -1,7 +1,7 @@
 //Import do arquivo dee mensagens e status code do projeto
 const message = require('../../modulo/config.js')
 
-const eventoCategoriaDAO = require('../../model/DAO/evento/evento_categoriaDAO.js')
+const eventoCategoriaDAO = require('../../model/DAO/evento/eventoCategoriaDAO.js')
 
 const inserirEventoCategoria = async function (eventoCategoria, contentType) {
     try {

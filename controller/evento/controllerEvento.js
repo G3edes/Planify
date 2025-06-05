@@ -1,6 +1,6 @@
 const DAOevento=require('../../model/DAO/evento/eventoDAO.js')
-const DAOeventoCategoria = require ('../../model/DAO/evento/evento_categoriaDAO.js')
-const DAOeventoParticipante = require ('../../model/DAO/evento/participar_evento.js')
+const DAOeventoCategoria = require ('../../model/DAO/evento/eventoCategoriaDAO.js')
+const DAOeventoParticipante = require ('../../model/DAO/evento/participarEvento.js')
 
 const controllerEventoCategoria = require ('../../controller/evento/controllerEventoCategoria.js')
 const controllerUsuario=require('../../controller/usuario/controllerUsuario.js')

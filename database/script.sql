@@ -9,7 +9,6 @@ CREATE TABLE tbl_usuario (
     senha VARCHAR(20) NOT NULL,
     data_nascimento DATE NOT NULL,
     foto_perfil VARCHAR(500),
-    palavra_chave VARCHAR(15) NOT NULL
 );
 
 CREATE TABLE tbl_categoria (
@@ -66,6 +65,13 @@ CREATE TABLE tbl_participar_evento (
         REFERENCES tbl_evento(id_evento),
     CONSTRAINT fk_participar_evento_usuario FOREIGN KEY (id_usuario)
         REFERENCES tbl_usuario(id_usuario)
+);
+
+CREATE TABLE tbl_codigo_recuperacao (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    email VARCHAR(60) NOT NULL,
+    codigo VARCHAR(10) NOT NULL,
+    expiracao DATETIME NOT NULL
 );
 
 show tables;
