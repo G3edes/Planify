@@ -262,6 +262,55 @@ app.put('/v1/planify/estado/:id', cors(), bodyParserJSON,async function (request
     response.status(result.status_code)
     response.json(result)
 })
+
+/*******************************************************************************************************************
+ * 
+ *                                      Participar Evento
+ * 
+ ********************************************************************************************************************/
+
+const controllerParticipar= require ('./controller/evento/controllerParticiparEvento')
+
+app.post('/v1/planify/participar', cors(), bodyParserJSON, async function (request, response) {
+    //recebe o content-type da requisição
+    let contentType=request.headers['content-type']
+    //recebe do body da requisição os dados encaminhados
+    let dadosBody=request.body
+    let result= await controllerParticipar.inserirParticiparEvento(dadosBody,contentType)
+    response.status(result.status_code)
+    response.json(result)
+})
+app.get('/v1/planify/participar', cors(), async function (request, response) {
+    let result= await controllerParticipar.listarParticiparEvento()
+    response.status(result.status_code)
+    response.json(result)
+})
+app.get('/v1/planify/participar/:id', cors(), async function (request, response) {
+    let id=request.params.id
+    let result= await controllerParticipar.buscarParticiparEvento(id)
+    response.status(result.status_code)
+    response.json(result)
+})
+app.delete('/v1/planify/participar/:id', cors(), async function (request, response){
+    let id = request.params.id
+    let result = await controllerParticipar.excluirParticiparEvento(id)
+
+    response.status(result.status_code)
+    response.json(result)
+})
+app.put('/v1/planify/participar/:id', cors(), bodyParserJSON,async function (request, response) {
+    //content-type requisição
+    let contentType= request.headers['content-type']
+    //id da requisção
+    let id = request.params.id
+    //body da requisição
+    let dadosBody=request.body
+    let result= await  controllerParticipar.atualizarParticiparEvento(id, dadosBody, contentType)
+    response.status(result.status_code)
+    response.json(result)
+})
+
+
 app.listen(8080, function(){
     console.log('API funcionando e aguardando requisições..')
 })
