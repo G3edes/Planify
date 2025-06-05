@@ -238,12 +238,12 @@ app.get('/v1/planify/estado/:id', cors(), async function (request, response) {
     response.status(result.status_code)
     response.json(result)
 })
-/*app.get('/v1/planify/estado/evento/:id', cors(), async function (request, response) {
+app.get('/v1/planify/estado/evento/:id', cors(), async function (request, response) {
     let id=request.params.id
-    let result= await controllerEstado.buscarEstado(id)
+    let result= await controllerEstado.buscarEstadoEvento(id)
     response.status(result.status_code)
     response.json(result)
-})*/
+})
 app.delete('/v1/planify/estado/:id', cors(), async function (request, response){
     let id = request.params.id
     let result = await controllerEstado.excluirEstado(id)

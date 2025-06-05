@@ -133,7 +133,7 @@ const buscarEventoCategoria = async function (id) {
         } else {
             let dadosgenero = {}
 
-            let resultgenero = await eventoCategoriaDAO.selectByIdFilmeGenero(parseInt(id))
+            let resultgenero = await eventoCategoriaDAO.selectByIdEventoCategoria(parseInt(id))
 
             if (resultgenero != false || typeof (resultgenero) == 'object') {
                 if (resultgenero.length > 0) {

@@ -47,41 +47,30 @@ const inserirEvento = async (dados) => {
 }
 
 const updateEvento = async (dados) => {
+    
     try {
-        let sql = `update tbl_evento set
-            (
-            titulo,
-            descricao,
-            data_evento,
-            horario,
-            local,
-            imagem,
-            limite_participantes,
-            valor_ingresso,
-            id_usuario
-          ) VALUES (
-            '${dados.titulo}',
-            '${dados.descricao}',
-            '${dados.data_evento}',
-            '${dados.horario}',
-            '${dados.local}',
-            '${dados.imagem}',
-            '${dados.limite_participantes}',
-            '${dados.valor_ingresso}',
-            '${dados.id_usuario}'
-          ) where id =${dados.id}`
-                    
+        let sql = `UPDATE tbl_evento SET
+            titulo = '${dados.titulo}',
+            descricao = '${dados.descricao}',
+            data_evento = '${dados.data_evento}',
+            horario = '${dados.horario}',
+            local = '${dados.local}',
+            imagem = '${dados.imagem}',
+            limite_participante = ${dados.limite_participante},
+            valor_ingresso = ${dados.valor_ingresso},
+            id_usuario = ${dados.id_usuario},
+            id_estado = ${dados.id_estado}
+        WHERE id_evento = ${dados.id}`;
 
-        let resultFilme = await prisma.$executeRawUnsafe(sql)
+        let resultEvento = await prisma.$executeRawUnsafe(sql)
 
-        if(resultFilme)
-            return true
-        else
-            return false
+        return resultEvento ? true : false
     } catch (error) {
+        console.error(error)
         return false
     }
-}
+};
+
 
 const deleteEvento = async function(id){
     try {

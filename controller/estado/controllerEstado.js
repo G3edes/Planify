@@ -146,7 +146,7 @@ const buscarEstado = async function (id) {
         return message.ERROR_INTERNAL_SERVER_CONTROLLER
     }
 }
-/*const buscarEstadoEvento = async function (id) {
+const buscarEstadoEvento = async function (id) {
     let dados={}
     try {
         
@@ -154,7 +154,7 @@ const buscarEstado = async function (id) {
         ) {
             return message.ERROR_REQUIRED_FIELDS //400
         }else{
-            let result = await DAOEstado.selectEstadoById(id)
+            let result = await DAOEstado.selectEventoByIdEstado(id)
             if (result != false || typeof(result)=='object'){
                 if (result.length>0) {
                     dados={
@@ -174,11 +174,12 @@ const buscarEstado = async function (id) {
         console.log(error)
         return message.ERROR_INTERNAL_SERVER_CONTROLLER
     }
-}*/
+}
 module.exports={
     inserirEstado,
     listarEstado,
     buscarEstado,
     excluirEstado,
-    atualizarEstado
+    atualizarEstado,
+    buscarEstadoEvento
 }

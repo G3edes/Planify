@@ -88,11 +88,29 @@ const selectEstadoById = async function(id){
         return false
     }
 }
+const selectEventoByIdEstado = async function(id_estado){
+    try {
+        let sql = `SELECT tbl_evento.*
+                    FROM tbl_evento
+                    WHERE tbl_evento.id_estado = ${id_estado}`
+  
+        let result = await prisma.$queryRawUnsafe(sql)
+  
+      if (result)
+          return result
+      else 
+          return false
+    } catch (error) {
+        return false
+    }
+}
+
 
 module.exports = {
     inserirEstado,
     updateEstado,
     deleteEstado,
     selectAllEstado,
-    selectEstadoById
+    selectEstadoById,
+    selectEventoByIdEstado
 }

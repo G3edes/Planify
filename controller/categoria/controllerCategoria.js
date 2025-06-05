@@ -179,6 +179,7 @@ const buscarEventoCategoria = async function (id) {
     }
 }
 
+
 module.exports={
     inserirCategoria,
     listarCategoria,

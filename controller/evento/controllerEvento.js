@@ -105,11 +105,48 @@ const atualizarEvento = async (id, evento, contentType) => {
                 if (result.length>0) {
                     evento.id=parseInt(id)
 
-                    let result = await DAOevento.updateEvento(genero)
+                    let result = await DAOevento.updateEvento(evento)
+                    
 
                     if (result) {
-                        
-                        return message.SUCESS_UPDATED_ITEM
+                        if (evento.categoria && Array.isArray(evento.categoria)) {
+                        let eventoInserido = await DAOevento.selectLastId()
+                        //Pegando o ultimo id inserido
+                        let idEvento = eventoInserido[0].id_evento //vendo se volta id
+
+                        for (let categoria of evento.categoria) {
+                            if (categoria.id_categoria && !isNaN(categoria.id_categoria)) {
+                                let eventoCategoria = {
+                                    id_evento: idEvento,
+                                    id_categoria: categoria.id_categoria
+                                }
+                                await DAOeventoCategoria.updateEventoCategoria(eventoCategoria)
+                            }
+                        }
+                    }
+                    if (evento.participante && Array.isArray(evento.participante)) {
+                        let eventoInserido = await DAOevento.selectLastId()
+                        //Pegando o ultimo id inserido
+                        let idEvento = eventoInserido[0].id_evento //vendo se volta id
+
+                        for (let participante of evento.participante) {
+                            if (participante.id_usuario && !isNaN(participante.id_usuario)) {
+                                let eventoParticipante = {
+                                    id_evento: idEvento,
+                                    id_usuario: participante.id_usuario
+                                }
+                    
+                                await  DAOeventoParticipante.updateParticiparEvento(eventoParticipante)
+                            }
+                        }
+                    }
+                    delete evento.id
+                    dados={
+                        status:true,
+                        status_code:200,
+                        evento:evento
+                    }
+                    return dados
                     }else{
                         return message.ERROR_INTERNAL_SERVER_MODEL
                     }
