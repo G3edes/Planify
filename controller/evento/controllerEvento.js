@@ -88,7 +88,7 @@ const atualizarEvento = async (id, evento, contentType) => {
         if (contentType == 'application/json') {
             if (
                 evento.titulo == '' || evento.titulo == undefined || evento.titulo == null || evento.titulo.length > 100 ||
-                evento.descricao == '' || evento.descricao == undefined || evento.descricao == null || evento.descricao.length > 60 ||
+                evento.descricao == '' || evento.descricao == undefined || evento.descricao == null || evento.descricao.length > 10000000 ||
                 evento.data_evento == '' || evento.data_evento == undefined || evento.data_evento == null || evento.data_evento.length > 20 ||
                 evento.horario == '' || evento.horario == undefined || evento.horario == null || evento.horario.length > 15 ||
                 evento.local == '' || evento.local == undefined || evento.local == null || evento.local.length > 70 ||
