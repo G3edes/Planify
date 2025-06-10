@@ -103,7 +103,7 @@ const listarEstado = async function () {
                 dados.status=true
                 dados.status_code=200,
                 dados.itens=result.length
-                dados.categoria=result
+                dados.estado=result
                 return dados
             }else{
                 return message.ERROR_NOT_FOUND
@@ -131,7 +131,7 @@ const buscarEstado = async function (id) {
                     dados={
                         status:true,
                         status_code:200,
-                        categoria:result
+                        estado:result
                     }
                     return dados
                 }else{
@@ -160,7 +160,7 @@ const buscarEstadoEvento = async function (id) {
                     dados={
                         status:true,
                         status_code:200,
-                        categoria:result
+                        estado:result
                     }
                     return dados
                 }else{
