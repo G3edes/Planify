@@ -15,7 +15,8 @@
  *                                                                                                    *  
  *                                                                                                    *
  *          Após a instalação do prima e do prisma client, devemos :                                  *
- *              npx prisma init                                                                       *
+ *              npx prisma init                                     
+ *                        
  *                                                                                                    *
  *          Você deverá configurar o arquivo .env e o schema.prisma com as credenciais do BD          *
  *          Após essa configuração voce deverá rodar o seguinte comando:                              *
@@ -295,6 +296,16 @@ app.delete('/v1/planify/participar/:id', cors(), async function (request, respon
     let id = request.params.id
     let result = await controllerParticipar.excluirParticiparEvento(id)
 
+    response.status(result.status_code)
+    response.json(result)
+})
+app.delete('/v1/planify/participar', cors(), bodyParserJSON, async function (request, response) {
+    //recebe o content-type da requisição
+    let contentType=request.headers['content-type']
+    //recebe do body da requisição os dados encaminhados
+    let dadosBody=request.body
+    
+    let result= await controllerParticipar.excluirParticipanteEvento(dadosBody,contentType)
     response.status(result.status_code)
     response.json(result)
 })

@@ -8,7 +8,7 @@ CREATE TABLE tbl_usuario (
     email VARCHAR(60) NOT NULL UNIQUE,
     senha VARCHAR(20) NOT NULL,
     data_nascimento DATE NOT NULL,
-    foto_perfil VARCHAR(500),
+    foto_perfil VARCHAR(500)
 );
 
 CREATE TABLE tbl_categoria (
@@ -34,7 +34,7 @@ CREATE TABLE tbl_evento (
     CONSTRAINT fk_usuario_evento
         FOREIGN KEY (id_usuario)
         REFERENCES tbl_usuario(id_usuario)
-        ON DELETE CASCADE
+        ON DELETE CASCADE,
     id_estado INT NOT NULL,
     CONSTRAINT fk_estado_evento
         FOREIGN KEY (id_estado)

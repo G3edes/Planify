@@ -62,6 +62,22 @@ const deleteParticiparEvento = async function(id_participar_evento){
       return false
     }
 }
+const deleteEventoPorUsuario = async function(participar){
+  
+  try {
+    let sql = `DELETE FROM tbl_participar_evento
+                WHERE id_usuario = ${participar.id_usuario}
+                AND id_evento = ${participar.id_evento};`
+
+    let result = await prisma.$executeRawUnsafe(sql)
+    if (result)
+      return true
+    else 
+      return false
+  } catch (error) {
+    return false
+  }
+}
 const selectAllParticiparEvento = async function(){
     try {
       //ScriptSQL para retornar todos os dados
@@ -142,5 +158,6 @@ module.exports = {
     selectAllParticiparEvento,
     selectByIdParticiparEvento,
     selectEventoByIdUsuario,
-    selectUsuarioByIdEvento
+    selectUsuarioByIdEvento,
+    deleteEventoPorUsuario
 } 
