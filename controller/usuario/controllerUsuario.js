@@ -42,6 +42,7 @@ const inserirUsuario = async (usuario, contentType) => {
 
 const atualizarUsuario = async (id, usuario, contentType) => {
     try {
+        dados={}
         if (contentType == 'application/json') {
             if (usuario.nome == ''                || usuario.nome == undefined            || usuario.nome == null             || usuario.nome.length>100            ||
             usuario.email == ''                   || usuario.email == undefined           || usuario.email == null            || usuario.email.length>60            ||
@@ -56,8 +57,12 @@ const atualizarUsuario = async (id, usuario, contentType) => {
                     usuario.id=parseInt(id)
                     
                     let result = await DAOUser.updateUsuario(usuario)
+                    let usuarioAtualizado = await DAOUser.selectusuarioById(id)
                     if (result) {
-                        return message.SUCESS_UPDATED_ITEM
+                        dados.status=true
+                        dados.status_code=200,
+                        dados.usuario=usuarioAtualizado
+                        return dados
                     }else{
                         return message.ERROR_INTERNAL_SERVER_MODEL
                     }
@@ -76,6 +81,7 @@ const atualizarUsuario = async (id, usuario, contentType) => {
 }
 const atualizarSenhaUsuario = async (id, usuario, contentType) => {
     try {
+        
         if (contentType == 'application/json') {
             if (usuario.senha == ''                || usuario.senha == undefined            || usuario.senha == null             || usuario.senha.length>100            ){
                 return message.ERROR_REQUIRED_FIELDS
@@ -230,11 +236,42 @@ const buscarUsuario = async function (id) {
     }
 }
 
+const buscarUsuarioEvento = async function (id) {
+    let dados={}
+    try {
+        
+        if (id == ''|| id == undefined|| id == null|| id<0 
+        ) {
+            return message.ERROR_REQUIRED_FIELDS //400
+        }else{
+            let result = await DAOUser.selectEventoByIdEstado(id)
+            if (result != false || typeof(result)=='object'){
+                if (result.length>0) {
+                    dados={
+                        status:true,
+                        status_code:200,
+                        evento:result
+                    }
+                    return dados
+                }else{
+                    return message.ERROR_NOT_FOUND//404
+                }
+            }else{
+                return message.ERROR_INTERNAL_SERVER_MODEL //500
+            }
+        }
+    } catch (error) {
+        console.log(error)
+        return message.ERROR_INTERNAL_SERVER_CONTROLLER
+    }
+}
+
 module.exports={
     inserirUsuario,
     listarUsuario,
     buscarUsuario,
     excluirUsuario,
     atualizarUsuario,
-    atualizarSenhaUsuario
+    atualizarSenhaUsuario,
+    buscarUsuarioEvento
 }

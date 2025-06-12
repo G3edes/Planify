@@ -193,7 +193,7 @@ const excluirEvento = async function (id){
                 return message.ERROR_INTERNAL_SERVER_MODEL
             }
         }
-    } catch (error) {
+    } catch (error) {        
         return message.ERROR_INTERNAL_SERVER_CONTROLLER
     }
 }

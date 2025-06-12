@@ -38,15 +38,14 @@ const inserirUsuario = async (dados) => {
 }
 
 const updateUsuario = async (dados) => {
-    
     try {
         let sql = `update tbl_usuario set
                             nome = '${dados.nome}',
                             email = '${dados.email}',
                             senha = '${dados.senha}',
                             data_nascimento = '${dados.data_nascimento}',
-                            foto_perfil = ${dados.foto_perfil ? `'${dados.foto_perfil}'` : null},
-                    where id_usuario = ${dados.id}`
+                            foto_perfil = ${dados.foto_perfil ? `'${dados.foto_perfil}'` : null}
+                    where id_usuario = ${dados.id};`
 
         let resultFilme = await prisma.$executeRawUnsafe(sql)
 
@@ -133,6 +132,22 @@ const selectLastId = async function() {
             return false
     } catch (error) {
         console.log(error)
+        return false
+    }
+}
+const selectEventoByIdUsuario = async function(id_usuario){
+    try {
+        let sql = `SELECT tbl_evento.*
+                    FROM tbl_evento
+                    WHERE tbl_evento.id_usuario = ${id_usuario};`
+  
+        let result = await prisma.$queryRawUnsafe(sql)
+  
+      if (result)
+          return result
+      else 
+          return false
+    } catch (error) {
         return false
     }
 }

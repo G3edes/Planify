@@ -16,11 +16,17 @@
  *                                                                                                    *
  *          Após a instalação do prima e do prisma client, devemos :                                  *
  *              npx prisma init                                     
- *                        
+ *                  
  *                                                                                                    *
  *          Você deverá configurar o arquivo .env e o schema.prisma com as credenciais do BD          *
  *          Após essa configuração voce deverá rodar o seguinte comando:                              *
- *                      npx prisma migrate dev                                                        *
+ *                      npx prisma migrate dev   
+ *
+ *          Instalar o NodeMailer para mandar os emails
+ * 
+ *          npm install nodemailer
+ * 
+ *          npm install dotenv                                                                    *
  *********************************************************************************************************/
 
 const express       = require('express')
@@ -53,7 +59,7 @@ app.use(express.json())
  ********************************************************************************************************************/
 
 const controllerUsuario= require('./controller/usuario/controllerUsuario')
-
+const controllerRecuperarSenha = require('./controller/usuario/controllerRecuperarSenha')
 
 app.post('/v1/planify/usuario', cors(), bodyParserJSON, async function (request, response) {
     //recebe o content-type da requisição
@@ -89,6 +95,12 @@ app.get('/v1/planify/usuario/:id', cors(), async function (request, response) {
     response.status(result.status_code)
     response.json(result)
 })
+app.get('/v1/planify/usuario/evento/:id', cors(), async function (request, response) {
+    let id=request.params.id
+    let result= await controllerUsuario.buscarUsuario(id)
+    response.status(result.status_code)
+    response.json(result)
+})
 app.delete('/v1/planify/usuario/:id', cors(), async function (request, response){
     let id = request.params.id
     let result = await controllerUsuario.excluirUsuario(id)
@@ -108,6 +120,8 @@ app.put('/v1/planify/usuario/:id', cors(), bodyParserJSON,async function (reques
     response.json(result)
 })
 
+app.post('/v1/planify/recuperar-senha', cors(), bodyParserJSON, controllerRecuperarSenha.enviarCodigo);
+app.post('/v1/planify/validar-codigo', cors(), bodyParserJSON, controllerRecuperarSenha.validarCodigo);
 
 
 /*******************************************************************************************************************

@@ -3,7 +3,7 @@ require('dotenv').config(); // <- ESSENCIAL!
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const DAOUser = require('../../model/DAO/usuario/usuarioDAO.js');
-const DAOCodigo = require('../../model/DAO/codigoRecuperaçãoDAO.js');
+const DAOCodigo = require('../../model/DAO/usuario/codigoRecuperacaoDAO.js');
 
 
 console.log('Email do .env:', process.env.EMAIL_USER);
