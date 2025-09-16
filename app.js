@@ -1,6 +1,5 @@
 /******************************************************************************************************
- * OBJETIVO: Criar uma API para realizar o CRUD do sistema de Eventos                                 *
- * DATA: 20/05/2025                                                                                   *
+ * OBJETIVO: Criar uma API para realizar o CRUD do sistema de Eventos                                 *                                                                                  *
  * AUTOR: Gabriel Guedes                                                                              *
  * Versão: 1.0                                                                                        *
  * Observação:                                                                                        *
